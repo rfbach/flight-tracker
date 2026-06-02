@@ -1,0 +1,23 @@
+<div class="tab-container">
+  <!-- Tab Headers -->
+  <div class="tab-headers">
+    <button [class.active]="currentTab === 'flightNumber'" (click)="switchTab('flightNumber')">
+      Flight Number
+    </button>
+    <button [class.active]="currentTab === 'route'" (click)="switchTab('route')">
+      Route
+    </button>
+  </div>
+
+  <!-- Tab Content Panels -->
+  <div class="tab-panels">
+    @if (currentTab === 'flightNumber') {
+        <app-search-by-flight-number></app-search-by-flight-number>
+    }
+
+    @if (currentTab === 'route') {
+      <app-search-by-route></app-search-by-route>
+    }
+
+  </div>
+</div>

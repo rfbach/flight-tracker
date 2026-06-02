@@ -1,0 +1,4 @@
+<input #origin type="text" placeholder="Enter origin" />
+<input #destination type="text" placeholder="Enter destination" />
+<input #airline type="text" placeholder="Enter airline" />
+<button (click)="searchByRoute(origin.value, destination.value, airline.value)">Search</button>
