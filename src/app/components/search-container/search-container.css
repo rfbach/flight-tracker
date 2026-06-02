@@ -1,0 +1,104 @@
+:host {
+	display: block;
+	padding: 1.5rem 1rem;
+}
+
+.tab-container {
+	--page-bg: #f4f8ff;
+	--surface: #ffffff;
+	--surface-alt: #eaf2ff;
+	--ink: #0f213d;
+	--ink-soft: #4b6285;
+	--accent: #1d4ed8;
+	--accent-strong: #1e3a8a;
+	--line: #c9d9f7;
+
+	max-width: 860px;
+	margin: 0 auto;
+	padding: 1.4rem;
+	border: 1px solid var(--line);
+	border-radius: 20px;
+	color: var(--ink);
+	background:
+		radial-gradient(circle at top right, #dce8ff 0%, transparent 45%),
+		radial-gradient(circle at bottom left, #eef4ff 0%, transparent 48%),
+		var(--page-bg);
+}
+
+.tab-intro {
+	margin-bottom: 1rem;
+}
+
+.eyebrow {
+	margin: 0;
+	font-size: 0.76rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var(--ink-soft);
+	font-weight: 700;
+}
+
+.tab-intro h2 {
+	margin: 0.35rem 0;
+	line-height: 1.15;
+	font-size: clamp(1.35rem, 2.6vw, 1.9rem);
+}
+
+.tab-intro p {
+	margin: 0;
+	color: var(--ink-soft);
+}
+
+.tab-headers {
+	display: flex;
+	gap: 0.5rem;
+	padding: 0.4rem;
+	background: var(--surface-alt);
+	border: 1px solid var(--line);
+	border-radius: 12px;
+}
+
+.tab-headers button {
+	flex: 1;
+	border: 0;
+	border-radius: 10px;
+	padding: 0.7rem 0.8rem;
+	font-weight: 700;
+	color: var(--ink-soft);
+	background: transparent;
+	transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
+}
+
+.tab-headers button:hover {
+	color: var(--ink);
+	background: #dfeaff;
+}
+
+.tab-headers button.active {
+	color: #ffffff;
+	background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+}
+
+.tab-headers button:focus-visible {
+	outline: 3px solid #93c5fd;
+	outline-offset: 2px;
+}
+
+.tab-panels {
+	margin-top: 1rem;
+	padding: 1rem;
+	border: 1px solid var(--line);
+	border-radius: 14px;
+	background: var(--surface);
+}
+
+@media (max-width: 600px) {
+	:host {
+		padding: 1rem 0.75rem;
+	}
+
+	.tab-container {
+		padding: 1rem;
+		border-radius: 16px;
+	}
+}

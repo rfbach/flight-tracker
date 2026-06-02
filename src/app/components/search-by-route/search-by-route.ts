@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Flight } from '../../models/flight.type';
 import { Flights } from '../../services/flights';
 
@@ -7,13 +7,26 @@ import { Flights } from '../../services/flights';
   imports: [],
   templateUrl: './search-by-route.html',
   styleUrl: './search-by-route.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchByRoute {
-  flightsService = inject(Flights);
+  private readonly flightsService = inject(Flights);
   searchResults = signal<Array<Flight>>([]);
+  hasSearched = signal(false);
 
-  searchByRoute(origin: string, destination: string, airline: string) {
-    this.flightsService.getFlightsByRoute(origin, destination, airline).subscribe({
+  searchByRoute(origin: string, destination: string, airline: string): void {
+    const originQuery = origin.trim();
+    const destinationQuery = destination.trim();
+    const airlineQuery = airline.trim();
+
+    this.hasSearched.set(true);
+
+    if (!originQuery && !destinationQuery && !airlineQuery) {
+      this.searchResults.set([]);
+      return;
+    }
+
+    this.flightsService.getFlightsByRoute(originQuery, destinationQuery, airlineQuery).subscribe({
       next: (flights) => {
         this.searchResults.set(flights);
       },
@@ -22,5 +35,9 @@ export class SearchByRoute {
         this.searchResults.set([]);
       },
     });
+  }
+
+  formatStatus(status: Flight['status']): string {
+    return status.charAt(0).toUpperCase() + status.slice(1);
   }
 }

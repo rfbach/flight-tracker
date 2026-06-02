@@ -1,4 +1,62 @@
-<input #origin type="text" placeholder="Enter origin" />
-<input #destination type="text" placeholder="Enter destination" />
-<input #airline type="text" placeholder="Enter airline" />
-<button (click)="searchByRoute(origin.value, destination.value, airline.value)">Search</button>
+<section class="search-panel">
+	<form
+		class="search-form"
+		(submit)="$event.preventDefault(); searchByRoute(origin.value, destination.value, airline.value)"
+	>
+		<div class="field-grid">
+			<label class="field-label" for="origin-input">
+				Origin
+				<input #origin id="origin-input" type="text" placeholder="Example: SEA" autocomplete="off" />
+			</label>
+
+			<label class="field-label" for="destination-input">
+				Destination
+				<input
+					#destination
+					id="destination-input"
+					type="text"
+					placeholder="Example: DEN"
+					autocomplete="off"
+				/>
+			</label>
+
+			<label class="field-label" for="airline-input">
+				Airline
+				<input #airline id="airline-input" type="text" placeholder="Example: JetBlue" autocomplete="off" />
+			</label>
+
+			<button class="search-button" type="submit">Search</button>
+		</div>
+	</form>
+
+	@if (hasSearched()) {
+		<section class="results" aria-live="polite">
+			<h3>Results</h3>
+
+			@if (searchResults().length === 0) {
+				<p class="empty-state">No flights match this route.</p>
+			} @else {
+				<ul class="results-list">
+					@for (flight of searchResults(); track flight.flightNumber + '-' + flight.departureTime) {
+						<li class="flight-card">
+							<div class="card-top">
+								<strong>{{ flight.flightNumber }}</strong>
+								<span
+									class="status"
+									[class.status-delayed]="flight.status === 'delayed'"
+									[class.status-cancelled]="flight.status === 'cancelled'"
+									[class.status-arrived]="flight.status === 'arrived'"
+								>
+									{{ formatStatus(flight.status) }}
+								</span>
+							</div>
+							<p>{{ flight.origin }} to {{ flight.destination }}</p>
+							<p>Depart: {{ flight.departureTime }}</p>
+							<p>Arrive: {{ flight.arrivalTime }}</p>
+						</li>
+					}
+				</ul>
+			}
+		</section>
+	}
+</section>

@@ -50,5 +50,11 @@ export const MOCK_FLIGHTS = [
     departure: { iata: 'SEA', scheduled: '2026-05-26T15:00:00+00:00' },
     arrival:   { iata: 'ORD', scheduled: '2026-05-26T21:30:00+00:00' },
     flight:    { iata: 'AS100' },
+  },
+  {
+    flight_status: 'cancelled',
+    departure: { iata: 'SEA', scheduled: '2026-05-26T18:00:00+00:00' },
+    arrival:   { iata: 'ORD', scheduled: '2026-05-26T21:30:00+00:00' },
+    flight:    { iata: 'AS200' },
   }
 ];

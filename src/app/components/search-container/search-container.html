@@ -1,23 +1,48 @@
 <div class="tab-container">
-  <!-- Tab Headers -->
-  <div class="tab-headers">
-    <button [class.active]="currentTab === 'flightNumber'" (click)="switchTab('flightNumber')">
+  <header class="tab-intro">
+    <p class="eyebrow">Flight Tracker</p>
+    <h2>Find flights fast</h2>
+    <p>Switch search modes to look up a single flight or a full route.</p>
+  </header>
+
+  <div class="tab-headers" role="tablist" aria-label="Flight search modes">
+    <button
+      type="button"
+      role="tab"
+      id="tab-flight-number"
+      [class.active]="currentTab === 'flightNumber'"
+      [attr.aria-selected]="currentTab === 'flightNumber'"
+      [attr.tabindex]="currentTab === 'flightNumber' ? '0' : '-1'"
+      aria-controls="panel-flight-number"
+      (click)="switchTab('flightNumber')"
+    >
       Flight Number
     </button>
-    <button [class.active]="currentTab === 'route'" (click)="switchTab('route')">
+    <button
+      type="button"
+      role="tab"
+      id="tab-route"
+      [class.active]="currentTab === 'route'"
+      [attr.aria-selected]="currentTab === 'route'"
+      [attr.tabindex]="currentTab === 'route' ? '0' : '-1'"
+      aria-controls="panel-route"
+      (click)="switchTab('route')"
+    >
       Route
     </button>
   </div>
 
-  <!-- Tab Content Panels -->
   <div class="tab-panels">
     @if (currentTab === 'flightNumber') {
+      <section role="tabpanel" id="panel-flight-number" aria-labelledby="tab-flight-number">
         <app-search-by-flight-number></app-search-by-flight-number>
+      </section>
     }
 
     @if (currentTab === 'route') {
-      <app-search-by-route></app-search-by-route>
+      <section role="tabpanel" id="panel-route" aria-labelledby="tab-route">
+        <app-search-by-route></app-search-by-route>
+      </section>
     }
-
   </div>
 </div>

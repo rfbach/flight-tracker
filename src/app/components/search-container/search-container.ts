@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SearchByFlightNumber } from "../search-by-flight-number/search-by-flight-number";
 import { SearchByRoute } from '../search-by-route/search-by-route';
 
@@ -7,6 +7,7 @@ import { SearchByRoute } from '../search-by-route/search-by-route';
   imports: [SearchByFlightNumber, SearchByRoute],
   templateUrl: './search-container.html',
   styleUrl: './search-container.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchContainer {
   currentTab: 'flightNumber' | 'route' = 'flightNumber';
