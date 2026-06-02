@@ -10,6 +10,6 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     // TODO: remove mockApiInterceptor before deploying to production
-    provideHttpClient(withInterceptors([mockApiInterceptor])),
+    // provideHttpClient(withInterceptors([mockApiInterceptor])),
   ]
 };

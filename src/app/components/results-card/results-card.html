@@ -1,0 +1,85 @@
+@if (hasSearched()) {
+	<section class="results" aria-live="polite">
+		<h3>Results</h3>
+
+		@if (searchResults().length === 0) {
+			<p class="empty-state">No flights found.</p>
+		} @else {
+			<ul class="results-list">
+				@for (flight of searchResults(); track flight.flightNumber + '-' + flight.scheduledDepartureTime) {
+					<li class="flight-card">
+						<div class="card-header">
+							<div class="flight-info">
+								<strong class="flight-number">{{ flight.flightNumber }}</strong>
+								<span class="route">{{ flight.departureAirport }} → {{ flight.arrivalAirport }}</span>
+							</div>
+							<span
+								class="status"
+								[class.status-delayed]="flight.status === 'delayed'"
+								[class.status-cancelled]="flight.status === 'cancelled'"
+								[class.status-arrived]="flight.status === 'arrived'"
+								[class.status-departed]="flight.status === 'departed'"
+								[class.status-scheduled]="flight.status === 'scheduled'"
+							>
+								{{ formatStatus(flight.status) }}
+							</span>
+						</div>
+
+						<div class="times-grid">
+							<div class="time-section">
+								<div class="time-label">Departure</div>
+								<div class="time-display">
+									<div class="primary-time">{{ getDepartureTime(flight) | date: 'short' }}</div>
+									@if (getDepartureTimeType(flight) !== 'scheduled') {
+										<div class="time-note">
+											@switch (getDepartureTimeType(flight)) {
+												@case ('actual') {
+													<span class="actual-label">Actual</span>
+												}
+												@case ('estimated') {
+													<span class="estimated-label">Estimated</span>
+												}
+											}
+										</div>
+									}
+									@if (getDepartureTimeType(flight) !== 'actual') {
+										<div class="scheduled-time">Scheduled: {{ flight.scheduledDepartureTime | date: 'short' }}</div>
+									}
+								</div>
+							</div>
+
+							<div class="time-section">
+								<div class="time-label">Arrival</div>
+								<div class="time-display">
+									<div class="primary-time">{{ getArrivalTime(flight) | date: 'short' }}</div>
+									@if (getArrivalTimeType(flight) !== 'scheduled') {
+										<div class="time-note">
+											@switch (getArrivalTimeType(flight)) {
+												@case ('actual') {
+													<span class="actual-label">Actual</span>
+												}
+												@case ('estimated') {
+													<span class="estimated-label">Estimated</span>
+												}
+											}
+										</div>
+									}
+									@if (getArrivalTimeType(flight) !== 'actual') {
+										<div class="scheduled-time">Scheduled: {{ flight.scheduledArrivalTime | date: 'short' }}</div>
+									}
+								</div>
+							</div>
+						</div>
+
+						@if (showDelayIndicator(flight)) {
+							<div class="delay-indicator">
+								<span class="delay-icon">⚠</span>
+								<span class="delay-text">{{ getDelayMessage(flight) }}</span>
+							</div>
+						}
+					</li>
+				}
+			</ul>
+		}
+	</section>
+}

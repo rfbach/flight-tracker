@@ -1,0 +1,186 @@
+:host {
+	display: block;
+}
+
+.results {
+	border-top: 1px solid #dbe7ff;
+	padding-top: 0.8rem;
+}
+
+.results h3 {
+	margin: 0 0 0.65rem;
+	font-size: 1rem;
+	color: #1e3a8a;
+}
+
+.empty-state {
+	margin: 0;
+	color: #4b6285;
+}
+
+.results-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: 0.8rem;
+}
+
+.flight-card {
+	border: 1px solid #d6e4ff;
+	border-radius: 12px;
+	padding: 0.9rem;
+	background: #f8fbff;
+	display: grid;
+	gap: 0.75rem;
+}
+
+.card-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 0.75rem;
+}
+
+.flight-info {
+	display: flex;
+	flex-direction: column;
+	gap: 0.2rem;
+}
+
+.flight-number {
+	font-size: 1rem;
+	color: #0f213d;
+}
+
+.route {
+	font-size: 0.85rem;
+	color: #415a80;
+}
+
+.times-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1rem;
+}
+
+.time-section {
+	display: grid;
+	gap: 0.3rem;
+}
+
+.time-label {
+	font-size: 0.75rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	color: #6a7fa0;
+	letter-spacing: 0.5px;
+}
+
+.time-display {
+	display: grid;
+	gap: 0.15rem;
+}
+
+.primary-time {
+	font-size: 0.95rem;
+	font-weight: 600;
+	color: #0f213d;
+}
+
+.time-note {
+	font-size: 0.7rem;
+	font-weight: 600;
+	display: flex;
+	gap: 0.3rem;
+}
+
+.actual-label {
+	background: #d7edff;
+	color: #044f86;
+	padding: 0.1rem 0.35rem;
+	border-radius: 4px;
+}
+
+.estimated-label {
+	background: #fff2cc;
+	color: #7a4e00;
+	padding: 0.1rem 0.35rem;
+	border-radius: 4px;
+}
+
+.scheduled-time {
+	font-size: 0.75rem;
+	color: #8b9aaa;
+	font-style: italic;
+}
+
+.delay-indicator {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.5rem 0.6rem;
+	background: #fffaeb;
+	border-left: 3px solid #f59e0b;
+	border-radius: 4px;
+	font-size: 0.8rem;
+}
+
+.delay-icon {
+	font-size: 1rem;
+	line-height: 1;
+}
+
+.delay-text {
+	color: #7a4e00;
+	font-weight: 600;
+}
+
+.status {
+	border-radius: 999px;
+	padding: 0.25rem 0.6rem;
+	font-size: 0.75rem;
+	font-weight: 700;
+	background: #dbeafe;
+	color: #1e3a8a;
+	white-space: nowrap;
+}
+
+.status-delayed {
+	background: #fff2cc;
+	color: #7a4e00;
+}
+
+.status-cancelled {
+	background: #f9d4d4;
+	color: #7a1212;
+}
+
+.status-arrived {
+	background: #d7edff;
+	color: #044f86;
+}
+
+.status-departed {
+	background: #dbeafe;
+	color: #1e3a8a;
+}
+
+.status-scheduled {
+	background: #e0f2fe;
+	color: #075985;
+}
+
+@media (max-width: 600px) {
+	.times-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.card-header {
+		flex-direction: column;
+	}
+
+	.delay-indicator {
+		font-size: 0.75rem;
+	}
+}

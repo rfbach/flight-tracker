@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Flights } from '../../services/flights';
 import { Flight } from '../../models/flight.type';
+import { ResultsCard } from '../results-card/results-card';
 
 @Component({
   selector: 'app-search-by-flight-number',
-  imports: [],
+  imports: [ResultsCard],
   templateUrl: './search-by-flight-number.html',
   styleUrl: './search-by-flight-number.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,9 +33,5 @@ export class SearchByFlightNumber {
         this.searchResults.set([]);
       },
     });
-  }
-
-  formatStatus(status: Flight['status']): string {
-    return status.charAt(0).toUpperCase() + status.slice(1);
   }
 }

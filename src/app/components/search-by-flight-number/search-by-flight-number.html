@@ -18,34 +18,5 @@
 		</div>
 	</form>
 
-	@if (hasSearched()) {
-		<section class="results" aria-live="polite">
-			<h3>Results</h3>
-
-			@if (searchResults().length === 0) {
-				<p class="empty-state">No flights found for that number.</p>
-			} @else {
-				<ul class="results-list">
-					@for (flight of searchResults(); track flight.flightNumber + '-' + flight.departureTime) {
-						<li class="flight-card">
-							<div class="card-top">
-								<strong>{{ flight.flightNumber }}</strong>
-								<span
-									class="status"
-									[class.status-delayed]="flight.status === 'delayed'"
-									[class.status-cancelled]="flight.status === 'cancelled'"
-									[class.status-arrived]="flight.status === 'arrived'"
-								>
-									{{ formatStatus(flight.status) }}
-								</span>
-							</div>
-							<p>{{ flight.origin }} to {{ flight.destination }}</p>
-							<p>Depart: {{ flight.departureTime }}</p>
-							<p>Arrive: {{ flight.arrivalTime }}</p>
-						</li>
-					}
-				</ul>
-			}
-		</section>
-	}
+	<app-results-card [searchResults]="searchResults()" [hasSearched]="hasSearched()" />
 </section>

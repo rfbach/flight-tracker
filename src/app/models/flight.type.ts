@@ -8,9 +8,17 @@ export enum FlightStatus {
 
 export type Flight = {
   flightNumber: string;
-  origin: string;
-  destination: string;
-  departureTime: string;
-  arrivalTime: string;
+  departureAirport: string;
+  arrivalAirport: string;
+  scheduledDepartureTime: string;
+  estimatedDepartureTime: string | null;
+  actualDepartureTime: string | null;
+  scheduledArrivalTime: string;
+  estimatedArrivalTime: string | null;
+  actualArrivalTime: string | null;
+  durationMinutes: number;
+  departureDelayMinutes: number | null;
+  arrivalDelayMinutes: number | null;
   status: FlightStatus;
+  csFlightNumber: string | null;
 };
