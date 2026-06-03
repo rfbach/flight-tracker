@@ -2,9 +2,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
 import { Flight, FlightStatus } from '../models/flight.type';
+import { environment } from '../../environments/environment';
 
 // Sign up for a free API key at https://airlabs.co/
-const API_KEY = import.meta.env.VITE_AIRLABS_API_KEY || '';
+const API_KEY = environment.apiKey;
 const BASE_URL = 'https://airlabs.co/api/v9/schedules';
 
 interface AirlabsRequest {

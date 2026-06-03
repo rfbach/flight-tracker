@@ -1,0 +1,29 @@
+# Terraform state files
+*.tfstate
+*.tfstate.*
+*.tfvars
+!terraform.tfvars.example
+.terraform/
+.terraform.lock.hcl
+
+# IDE files
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.vscode/
+*.iml
+
+# OS files
+Thumbs.db
+.directory
+
+# Logs
+*.log
+crash.dump
+
+# Temporary files
+tmp/
+temp/
+*.tmp

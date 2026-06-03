@@ -6,7 +6,12 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "deploy": "powershell -ExecutionPolicy Bypass -File ./deploy.ps1",
+    "terraform:init": "cd terraform && terraform init",
+    "terraform:plan": "cd terraform && terraform plan",
+    "terraform:apply": "cd terraform && terraform apply",
+    "terraform:destroy": "cd terraform && terraform destroy"
   },
   "private": true,
   "packageManager": "npm@11.6.2",
