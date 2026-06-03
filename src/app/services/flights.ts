@@ -4,7 +4,7 @@ import { map, Observable, tap } from 'rxjs';
 import { Flight, FlightStatus } from '../models/flight.type';
 
 // Sign up for a free API key at https://airlabs.co/
-const API_KEY = '6ef2046e-75cd-4cac-bd0a-f82a10b5a4e6';
+const API_KEY = import.meta.env.VITE_AIRLABS_API_KEY || '';
 const BASE_URL = 'https://airlabs.co/api/v9/schedules';
 
 interface AirlabsRequest {
