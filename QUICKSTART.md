@@ -1,6 +1,6 @@
 # AWS Deployment Quick Reference
 
-## 🚀 Quick Start (5 minutes)
+## 🚀 Quick Start (10-15 minutes, including CloudFront deployment)
 
 ### 1. Prerequisites
 ```bash
@@ -55,32 +55,35 @@ terraform apply
 | Resource | Purpose | Cost |
 |----------|---------|------|
 | **S3 Bucket** | Stores static website files | ~$0.02/month |
-| **Website Hosting** | Serves HTML/CSS/JS files via HTTPS | Included in S3 |
+| **CloudFront** | Global HTTPS CDN for fast delivery | ~$1-2/month |
+| **SSL/TLS** | HTTPS encryption (CloudFront default cert) | Free |
 
 ## 🌐 Access Your Site
 
-After deployment completes:
+After deployment completes (CloudFront takes 5-15 minutes to activate):
 
 ```
-https://flight-tracker-prod-12345.s3.us-east-1.amazonaws.com
+https://d1234567890ab.cloudfront.net
 ```
 
 Get the exact URL:
 ```bash
 cd terraform
-terraform output website_url
+terraform output cloudfront_url
 ```
 
 ## 📤 Update Your Site
 
 After code changes:
-```bash
-npm run deploy
+```powershell
+.\deploy.ps1
+# Select option 2 (Upload only)
 ```
 
 The script will:
 - Rebuild your app
 - Upload new files to S3
+- CloudFront serves updates within 1 hour (or clear cache for immediate delivery)
 
 ## 🗑️ Remove Everything
 
@@ -108,8 +111,14 @@ terraform output s3_bucket_name
 ### "Bucket already exists"
 → Change `bucket_name` in `terraform.tfvars` to something unique
 
+### Site shows old files after updating code
+→ CloudFront caches for 1 hour. Clear browser cache or use CloudFront invalidation in AWS Console.
+
 ### 404 errors on page refresh (SPA routing)
-→ Configuration includes automatic fix - should work automatically
+→ CloudFront configuration includes automatic fix - should work automatically
+
+### Site not accessible immediately after deploy
+→ CloudFront takes 5-15 minutes to fully deploy globally. Check AWS Console for status.
 
 ## 📚 Full Documentation
 
@@ -119,20 +128,19 @@ See `DEPLOYMENT.md` for:
 - Monitoring and troubleshooting
 - Cost breakdown
 
-## 📁 Files Added
+## 📁 Key Files
 
 ```
 terraform/
-├── main.tf                    # AWS resources configuration
+├── main.tf                    # S3 + CloudFront resources
 ├── variables.tf               # Input variables
-├── outputs.tf                 # Output values
-├── versions.tf                # Terraform version requirements
+├── outputs.tf                 # Output values (includes CloudFront URL)
 ├── terraform.tfvars.example   # Configuration template
-├── README.md                  # Terraform-specific docs
-└── .gitignore                 # Ignore state files
+└── terraform.tfvars           # Your actual config (create from example)
 
 deploy.ps1                      # PowerShell deployment script
 DEPLOYMENT.md                   # Complete deployment guide
+QUICKSTART.md                   # This file
 ```
 
 ## npm Scripts Available
