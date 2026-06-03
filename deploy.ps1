@@ -119,22 +119,67 @@ try {
         Write-Host "Step 2: Getting S3 bucket info..." -ForegroundColor Yellow
         Push-Location terraform
         $bucketName = terraform output -raw s3_bucket_name
-        $websiteUrl = terraform output -raw website_url
+        $cloudfrontUrl = terraform output -raw cloudfront_url
         Write-Host "Bucket: $bucketName" -ForegroundColor Green
         Pop-Location
-        $stepNumber = 3
     } else {
         Write-Host ""
         Write-Host "Step 2: Infrastructure deployment..." -ForegroundColor Yellow
-        Write-Host "Full deployment not implemented in this version" -ForegroundColor Yellow
-        $stepNumber = 3
+        Push-Location terraform
+        
+        Write-Host "Initializing Terraform..." -ForegroundColor Blue
+        terraform init
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "Terraform init failed" -ForegroundColor Red
+            Pop-Location
+            exit 1
+        }
+        Write-Host "Terraform initialized" -ForegroundColor Green
+        
+        Write-Host ""
+        Write-Host "Planning infrastructure changes..." -ForegroundColor Blue
+        terraform plan -out=tfplan
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "Terraform plan failed" -ForegroundColor Red
+            Pop-Location
+            exit 1
+        }
+        Write-Host "Terraform plan completed" -ForegroundColor Green
+        
+        Write-Host ""
+        Write-Host "Applying Terraform configuration..." -ForegroundColor Blue
+        terraform apply tfplan
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "Terraform apply failed" -ForegroundColor Red
+            Pop-Location
+            exit 1
+        }
+        Write-Host "Infrastructure deployed successfully" -ForegroundColor Green
+        
+        Write-Host ""
+        Write-Host "Retrieving deployment outputs..." -ForegroundColor Blue
+        $bucketName = terraform output -raw s3_bucket_name
+        $cloudfrontUrl = terraform output -raw cloudfront_url
+        Write-Host "Bucket: $bucketName" -ForegroundColor Green
+        Write-Host "CloudFront URL: $cloudfrontUrl" -ForegroundColor Green
+        
+        Pop-Location
     }
+
+    Write-Host ""
+    Write-Host "Step 3: Uploading files to S3..." -ForegroundColor Yellow
+    aws s3 sync $buildDir "s3://$bucketName" --delete
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "Upload failed" -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "Files uploaded successfully" -ForegroundColor Green
 
     Write-Host ""
     Write-Host "Deployment completed!" -ForegroundColor Green
     Write-Host "Summary:"
     Write-Host "  S3 Bucket: $bucketName"
-    Write-Host "  Website: $websiteUrl"
+    Write-Host "  CloudFront URL: $cloudfrontUrl"
 
 } catch {
     Write-Host "Error: $($_.Exception.Message)" -ForegroundColor Red
