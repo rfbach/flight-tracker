@@ -2,20 +2,29 @@
 	<section class="results" aria-live="polite">
 		<h3>Results</h3>
 
-		@if (searchResults().length === 0) {
+		@if (isLoading()) {
+			<div class="loading-state">
+				<div class="spinner"></div>
+				<p>Searching for flights...</p>
+			</div>
+		} @else if (searchResults().length === 0) {
 			<p class="empty-state">No flights found.</p>
 		} @else {
 			<ul class="results-list">
 				@for (flight of searchResults(); track flight.flightNumber + '-' + flight.scheduledDepartureTime) {
-					<li class="flight-card">
-						<div class="card-header">
+					<li class="flight-list">
+						<div class="list-header">
 							<div class="flight-info">
-								<strong class="flight-number">{{ flight.flightNumber }}</strong>
+							<strong class="flight-number">
+								{{ flight.flightNumber }}
+								@if (getAirlineName(flight.flightNumber)) {
+									<span class="airline-name">({{ getAirlineName(flight.flightNumber) }})</span>
+								}
+							</strong>
 								<span class="route">{{ flight.departureAirport }} → {{ flight.arrivalAirport }}</span>
 							</div>
 							<span
 								class="status"
-								[class.status-delayed]="flight.status === 'delayed'"
 								[class.status-cancelled]="flight.status === 'cancelled'"
 								[class.status-arrived]="flight.status === 'arrived'"
 								[class.status-departed]="flight.status === 'departed'"
@@ -29,9 +38,17 @@
 							<div class="time-section">
 								<div class="time-label">Departure</div>
 								<div class="time-display">
-									<div class="primary-time">{{ getDepartureTime(flight) | date: 'short' }}</div>
-									@if (getDepartureTimeType(flight) !== 'scheduled') {
-										<div class="time-note">
+									@if (getDepartureTimeType(flight) === 'scheduled') {
+										<div class="primary-time">{{ getDepartureTime(flight) | date: 'short' }}</div>
+									} @else {
+										<div 
+											class="primary-time"
+											[class.delayed-time]="!isDepartureEarlyOrOnTime(flight)"
+											[class.early-time]="isDepartureEarlyOrOnTime(flight)"
+										>
+											{{ getDepartureTime(flight) | date: 'short' }}
+										</div>
+										<!-- <div class="time-note">
 											@switch (getDepartureTimeType(flight)) {
 												@case ('actual') {
 													<span class="actual-label">Actual</span>
@@ -40,10 +57,8 @@
 													<span class="estimated-label">Estimated</span>
 												}
 											}
-										</div>
-									}
-									@if (getDepartureTimeType(flight) !== 'actual') {
-										<div class="scheduled-time">Scheduled: {{ flight.scheduledDepartureTime | date: 'short' }}</div>
+										</div> -->
+										<div class="scheduled-time strikethrough">{{ flight.scheduledDepartureTime | date: 'short' }}</div>
 									}
 								</div>
 							</div>
@@ -51,9 +66,17 @@
 							<div class="time-section">
 								<div class="time-label">Arrival</div>
 								<div class="time-display">
-									<div class="primary-time">{{ getArrivalTime(flight) | date: 'short' }}</div>
-									@if (getArrivalTimeType(flight) !== 'scheduled') {
-										<div class="time-note">
+									@if (getArrivalTimeType(flight) === 'scheduled') {
+										<div class="primary-time">{{ getArrivalTime(flight) | date: 'short' }}</div>
+									} @else {
+										<div 
+											class="primary-time"
+											[class.delayed-time]="!isArrivalEarlyOrOnTime(flight)"
+											[class.early-time]="isArrivalEarlyOrOnTime(flight)"
+										>
+											{{ getArrivalTime(flight) | date: 'short' }}
+										</div>
+										<!-- <div class="time-note">
 											@switch (getArrivalTimeType(flight)) {
 												@case ('actual') {
 													<span class="actual-label">Actual</span>
@@ -62,10 +85,8 @@
 													<span class="estimated-label">Estimated</span>
 												}
 											}
-										</div>
-									}
-									@if (getArrivalTimeType(flight) !== 'actual') {
-										<div class="scheduled-time">Scheduled: {{ flight.scheduledArrivalTime | date: 'short' }}</div>
+										</div> -->
+										<div class="scheduled-time strikethrough">{{ flight.scheduledArrivalTime | date: 'short' }}</div>
 									}
 								</div>
 							</div>

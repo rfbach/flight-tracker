@@ -5,12 +5,12 @@
     >
 		<div class="field-grid">
 			<label class="field-label" for="flight-number-input">
-				Flight number
+				Flight number (IATA)
 				<input
 					#flightNumber
 					id="flight-number-input"
 					type="text"
-					placeholder="Example: JT305"
+					placeholder="Example: UA1488"
 					autocomplete="off"
 				/>
 			</label>
@@ -18,5 +18,5 @@
 		</div>
 	</form>
 
-	<app-results-card [searchResults]="searchResults()" [hasSearched]="hasSearched()" />
+	<app-results-list [searchResults]="searchResults()" [hasSearched]="hasSearched()" [isLoading]="isLoading()" [airlines]="airlines()" />
 </section>

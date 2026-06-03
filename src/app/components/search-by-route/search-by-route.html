@@ -5,12 +5,12 @@
 	>
 		<div class="field-grid">
 			<label class="field-label" for="origin-input">
-				Origin
+				Origin (IATA)
 				<input #origin id="origin-input" type="text" placeholder="Example: SEA" autocomplete="off" />
 			</label>
 
 			<label class="field-label" for="destination-input">
-				Destination
+				Destination (IATA)
 				<input
 					#destination
 					id="destination-input"
@@ -22,7 +22,12 @@
 
 			<label class="field-label" for="airline-input">
 				Airline
-				<input #airline id="airline-input" type="text" placeholder="Example: JetBlue" autocomplete="off" />
+				<select #airline id="airline-input">
+					<option value="">All Airlines</option>
+					@for (airline of airlines(); track airline.code) {
+						<option [value]="airline.code">{{ airline.name }} ({{ airline.code }})</option>
+					}
+				</select>
 			</label>
 
 			<button class="search-button" type="submit">Search</button>
@@ -38,5 +43,5 @@
         </div>
     }
 
-	<app-results-card [searchResults]="searchResults()" [hasSearched]="hasSearched()" />
+	<app-results-list [searchResults]="searchResults()" [hasSearched]="hasSearched()" [isLoading]="isLoading()" [airlines]="airlines()" />
 </section>

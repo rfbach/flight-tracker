@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ResultsCard } from './results-card';
+import { resultsList } from './results-list';
 import { Flight, FlightStatus } from '../../models/flight.type';
 
-describe('ResultsCard', () => {
-	let component: ResultsCard;
-	let fixture: ComponentFixture<ResultsCard>;
+describe('resultsList', () => {
+	let component: resultsList;
+	let fixture: ComponentFixture<resultsList>;
 
 	const mockFlight: Flight = {
 		flightNumber: 'JT305',
@@ -25,10 +25,10 @@ describe('ResultsCard', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [ResultsCard],
+			imports: [resultsList],
 		}).compileComponents();
 
-		fixture = TestBed.createComponent(ResultsCard);
+		fixture = TestBed.createComponent(resultsList);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});
@@ -60,31 +60,19 @@ describe('ResultsCard', () => {
 		expect(emptyState.textContent).toContain('No flights found');
 	});
 
-	it('should display flight cards when searchResults has data', () => {
+	it('should display flight lists when searchResults has data', () => {
 		fixture.componentRef.setInput('hasSearched', true);
 		fixture.componentRef.setInput('searchResults', [mockFlight]);
 		fixture.detectChanges();
 
-		const flightCards = fixture.nativeElement.querySelectorAll('.flight-card');
-		expect(flightCards.length).toBe(1);
+		const flightLists = fixture.nativeElement.querySelectorAll('.flight-list');
+		expect(flightLists.length).toBe(1);
 	});
 
 	it('should format status correctly', () => {
 		expect(component.formatStatus(FlightStatus.Scheduled)).toBe('Scheduled');
-		expect(component.formatStatus(FlightStatus.Delayed)).toBe('Delayed');
 		expect(component.formatStatus(FlightStatus.Cancelled)).toBe('Cancelled');
 		expect(component.formatStatus(FlightStatus.Arrived)).toBe('Arrived');
-	});
-
-	it('should apply correct status classes', () => {
-		const delayedFlight: Flight = { ...mockFlight, status: FlightStatus.Delayed };
-
-		fixture.componentRef.setInput('hasSearched', true);
-		fixture.componentRef.setInput('searchResults', [delayedFlight]);
-		fixture.detectChanges();
-
-		const statusBadge = fixture.nativeElement.querySelector('.status');
-		expect(statusBadge.classList.contains('status-delayed')).toBeTruthy();
 	});
 
 	describe('getDepartureTime', () => {
@@ -214,7 +202,7 @@ describe('ResultsCard', () => {
 				departureDelayMinutes: 15,
 			};
 
-			expect(component.getDelayMessage(flight)).toBe('Dep: +15 min');
+			expect(component.getDelayMessage(flight)).toBe('Departure delayed 15 minutes');
 		});
 
 		it('should return arrival delay message', () => {
@@ -223,7 +211,7 @@ describe('ResultsCard', () => {
 				arrivalDelayMinutes: 10,
 			};
 
-			expect(component.getDelayMessage(flight)).toBe('Arr: +10 min');
+			expect(component.getDelayMessage(flight)).toBe('Arrival delayed 10 minutes');
 		});
 
 		it('should return both delays separated by pipe', () => {
@@ -233,7 +221,7 @@ describe('ResultsCard', () => {
 				arrivalDelayMinutes: 10,
 			};
 
-			expect(component.getDelayMessage(flight)).toBe('Dep: +15 min | Arr: +10 min');
+			expect(component.getDelayMessage(flight)).toBe('Departure delayed 15 minutes | Arrival delayed 10 minutes');
 		});
 
 		it('should return empty string if no delays', () => {
@@ -250,16 +238,6 @@ describe('ResultsCard', () => {
 			};
 
 			expect(component.showDelayIndicator(flight)).toBe(true);
-		});
-
-		it('should return false if status is delayed', () => {
-			const flight: Flight = {
-				...mockFlight,
-				status: FlightStatus.Delayed,
-				departureDelayMinutes: 15,
-			};
-
-			expect(component.showDelayIndicator(flight)).toBe(false);
 		});
 
 		it('should return false if no delays', () => {

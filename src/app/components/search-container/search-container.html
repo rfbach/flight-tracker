@@ -1,8 +1,8 @@
 <div class="tab-container">
   <header class="tab-intro">
     <p class="eyebrow">Flight Tracker</p>
-    <h2>Find flights fast</h2>
-    <p>Switch search modes to look up a single flight or a full route.</p>
+    <h2>Get up to date flight statuses</h2>
+    <p>Switch search modes to look up by flight number or by route.</p>
   </header>
 
   <div class="tab-headers" role="tablist" aria-label="Flight search modes">
@@ -33,16 +33,22 @@
   </div>
 
   <div class="tab-panels">
-    @if (currentTab === 'flightNumber') {
-      <section role="tabpanel" id="panel-flight-number" aria-labelledby="tab-flight-number">
-        <app-search-by-flight-number></app-search-by-flight-number>
-      </section>
-    }
+    <section 
+      role="tabpanel" 
+      id="panel-flight-number" 
+      aria-labelledby="tab-flight-number"
+      [hidden]="currentTab !== 'flightNumber'"
+    >
+      <app-search-by-flight-number [airlines]="airlines"></app-search-by-flight-number>
+    </section>
 
-    @if (currentTab === 'route') {
-      <section role="tabpanel" id="panel-route" aria-labelledby="tab-route">
-        <app-search-by-route></app-search-by-route>
-      </section>
-    }
+    <section 
+      role="tabpanel" 
+      id="panel-route" 
+      aria-labelledby="tab-route"
+      [hidden]="currentTab !== 'route'"
+    >
+      <app-search-by-route [airlines]="airlines"></app-search-by-route>
+    </section>
   </div>
 </div>

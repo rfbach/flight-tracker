@@ -24,7 +24,7 @@ export type Flight = {
   destination: string;
   departureTime: string;  // ISO 8601 string
   arrivalTime: string;    // ISO 8601 string
-  status: 'scheduled' | 'delayed' | 'cancelled' | 'departed' | 'arrived';
+  status: 'scheduled' | 'cancelled' | 'departed' | 'arrived';
 };
 ```
 

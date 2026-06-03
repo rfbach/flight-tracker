@@ -20,14 +20,14 @@ interface AirlabsFlight {
   dep_iata: string;
   arr_iata: string;
   dep_time: string;
-  dep_time_estimated: string | null;
-  dep_time_actual: string | null;
+  dep_estimated: string | null;
+  dep_actual: string | null;
   arr_time: string;
-  arr_time_estimated: string | null;
-  arr_time_actual: string | null;
+  arr_estimated: string | null;
+  arr_actual: string | null;
   duration: number;
-  dep_delay: number | null;
-  arr_delay: number | null;
+  dep_delayed: number | null;
+  arr_delayed: number | null;
   status: string;
   cs_flight_iata: string | null;
 }
@@ -48,7 +48,6 @@ function mapStatus(status: string, depDelay: number): FlightStatus {
     case 'landed':    return FlightStatus.Arrived;
     case 'cancelled': return FlightStatus.Cancelled;
     default:
-      if (depDelay > 0) return FlightStatus.Delayed;
       return FlightStatus.Scheduled;
   }
 }
@@ -59,15 +58,15 @@ function toFlight(f: AirlabsFlight): Flight {
     departureAirport: f.dep_iata,
     arrivalAirport: f.arr_iata,
     scheduledDepartureTime: f.dep_time,
-    estimatedDepartureTime: f.dep_time_estimated,
-    actualDepartureTime: f.dep_time_actual,
+    estimatedDepartureTime: f.dep_estimated,
+    actualDepartureTime: f.dep_actual,
     scheduledArrivalTime: f.arr_time,
-    estimatedArrivalTime: f.arr_time_estimated,
-    actualArrivalTime: f.arr_time_actual,
+    estimatedArrivalTime: f.arr_estimated,
+    actualArrivalTime: f.arr_actual,
     durationMinutes: f.duration,
-    departureDelayMinutes: f.dep_delay,
-    arrivalDelayMinutes: f.arr_delay,
-    status: mapStatus(f.status, f.dep_delay ?? 0),
+    departureDelayMinutes: f.dep_delayed,
+    arrivalDelayMinutes: f.arr_delayed,
+    status: mapStatus(f.status, f.dep_delayed ?? 0),
     csFlightNumber: f.cs_flight_iata,
   };
 }
@@ -99,10 +98,10 @@ export class Flights {
     return this.#http
       .get<AirlabsResponse>(BASE_URL, { params })
       .pipe(
-        tap((res) => {
-          console.log('Remaining requests:', res.request.key.limits_total);
-          console.log('API response:', res);
-        }),
+        // tap((res) => {
+        //   console.log('Remaining requests:', res.request.key.limits_total);
+        //   console.log('API response:', res);
+        // }),
         map((res) => ({
           flights: res.response.map(toFlight),
           hasMore: res.request.has_more,
@@ -120,10 +119,10 @@ export class Flights {
     return this.#http
       .get<AirlabsResponse>(BASE_URL, { params })
       .pipe(
-        tap((res) => {
-          console.log('Remaining requests:', res.request.key.limits_total);
-          console.log('API response:', res);
-        }),
+        // tap((res) => {
+        //   console.log('Remaining requests:', res.request.key.limits_total);
+        //   console.log('API response:', res);
+        // }),
         map((res) => res.response.map(toFlight))
       );
   }
